@@ -7,19 +7,9 @@
 
     // 4: check for error
     if ( empty($email) || empty($password) ) {
-        echo 'All fields required.';
+        $_SESSION["error"] = 'All fields required.';
     } else {
-        // 4.25: sql
-        $sql = "SELECT * FROM users where email = :email";
-
-        // 4.5: prepare
-        $query = $database->prepare($sql);
-
-        // 4.75: execute
-        $query->execute(["email" => $email]);
-
-        // 5: fetch
-        $user = $query->fetch();
+        $user = getUserByEmail($email);
 
         // 6: check if user exists
         if ( $user ) {
@@ -31,14 +21,20 @@
                 $_SESSION["user"] = $user;
 
                 // 9: redirect user back to main page
-                header("Location: /");
+                unset($_SESSION["error"]);
+                $_SESSION["success"] = "Welcome back, ".$user['name']."!";
+                header("Location: /dashboard");
                 exit;
 
             } else {
-                echo "Incorrect password.";
+                $_SESSION["error"] = 'Incorrect password.';
             }
         } else {
-            echo "Invalid email.";
+            $_SESSION["error"] = 'Invalid email.';
         }
     };
+
+    // 9: redirect user back to main page
+    header("Location: /login");
+    exit;
 ?>
