@@ -158,7 +158,7 @@
         </table>
       </div>
       <div class="text-center">
-        <a href="dashboard.html" class="btn btn-link btn-sm"
+        <a href="/dashboard" class="btn btn-link btn-sm"
           ><i class="bi bi-arrow-left"></i> Back to Dashboard</a
         >
       </div>

@@ -29,31 +29,31 @@ switch ($path) {
     break;
     
   case '/posts/add':
-    require "includes/posts/manage_posts_add.php";
+    require "pages/posts/manage_posts_add.php";
     break;
 
   case '/posts/edit':
-    require "includes/posts/manage_posts_edit.php";
+    require "pages/posts/manage_posts_edit.php";
     break;
 
    case '/posts/manage':
-    require "includes/posts/manage_posts.php";
+    require "pages/posts/manage_posts.php";
     break;
 
   case '/users/add':
-    require "includes/users/manage_users_add.php";
+    require "pages/users/manage_users_add.php";
     break;
 
   case '/users/edit':
-    require "includes/users/manage_users_edit.php";
+    require "pages/users/manage_users_edit.php";
     break;
 
   case '/users/changepwd':
-    require "includes/users/manage_users_changepwd.php";
+    require "pages/users/manage_users_changepwd.php";
     break;
 
   case '/users/manage':
-    require "includes/users/manage_users.php";
+    require "pages/users/manage_users.php";
     break;
     
   case '/auth/login':
