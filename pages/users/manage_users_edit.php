@@ -2,20 +2,19 @@
 
 $database = connectToDB();
 
-$sql = "SELECT * FROM users";
+$id = $_GET["id"];
 
+$sql = "SELECT * FROM users WHERE id = :id";
 $query = $database->prepare($sql);
+$query->execute(["id" => $id]);
+$user = $query->fetch();
 
-$query->execute();
-
-$users = $query->fetchAll();
-
-$id = $_POST["user_id"]
-
+$name = $user["name"];
+$email = $user["email"];
+$role = $user["role"];
 ?>
 
 <?php require "parts/header.php"?>
-
 
     <div class="container mx-auto my-5" style="max-width: 700px;">
       <div class="d-flex justify-content-between align-items-center mb-2">
@@ -30,22 +29,22 @@ $id = $_POST["user_id"]
             <div class="row">
               <div class="col">
                 <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" name="name"/>
+                <input type="text" class="form-control" id="name" name="name" value="<?= $name ?>"/>
                 <input type="hidden" name="id" value="<?= $id?>" style="width:0px"/>
               </div>
               <div class="col">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" />
+                <input type="email" class="form-control" id="email" name="email" value="<?= $email ?>" disabled/>
               </div>
             </div>
           </div>
           <div class="mb-3">
             <label for="role" class="form-label">Role</label>
-            <select class="form-control" id="role" name="role">
+            <select class="form-control" id="role" name="role" value=" <?= $role ?> ">
               <option value="">Select an option</option>
-              <option value="user">User</option>
-              <option value="editor">Editor</option>
-              <option value="admin">Admin</option>
+              <option value="user" <?php echo ( $user["role"] === "user" ? "selected" : "" ); ?>>User</option>
+              <option value="editor" <?php echo ( $user["role"] === "editor" ? "selected" : "" ); ?>>Editor</option>
+              <option value="admin" <?php echo ( $user["role"] === "admin" ? "selected" : "" ); ?>>Admin</option>
             </select>
           </div>
           <div class="d-grid">

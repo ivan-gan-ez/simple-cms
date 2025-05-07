@@ -5,6 +5,7 @@ session_start();
 require "includes/functions.php";
 
 $path = $_SERVER["REQUEST_URI"];
+$path = parse_url( $path, PHP_URL_PATH );
 
 switch ($path) {
 

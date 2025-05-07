@@ -59,11 +59,12 @@ $database = connectToDB();
               </td>
               <td class="text-end">
                 <div class="buttons" style="min-width: 135px;">
-
-                  <form method="post" action="/users/edit" style="display:inline">
-                    <input type="hidden" name="user_id" value="<?php echo $users[$i]["id"];?>" style="width:0px"/>
-                    <button class="btn btn-success btn-sm me-2"><i class="bi bi-pencil"></i></button>
-                  </form>
+                
+                  <a
+                    href="/users/edit?id=<?= $user['id']; ?>"
+                    class="btn btn-success btn-sm me-2"
+                    ><i class="bi bi-pencil"></i
+                  ></a>
 
                   <a
                     href="/users/changepwd"
@@ -71,10 +72,35 @@ $database = connectToDB();
                     ><i class="bi bi-key"></i
                   ></a>
 
-                  <form method="post" action="/usermanage/delete" style="display:inline">
-                    <input type="hidden" name="user_id" value="<?php echo $users[$i]["id"];?>" style="width:0px"/>
-                    <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
-                  </form>
+                  <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#userDeleteModal-<?php echo $users[$i]["id"];?>">
+                  <i class="bi bi-trash"></i>
+                  </button>
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="userDeleteModal-<?php echo $users[$i]["id"];?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure you want to delete?</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-start">
+                          This action cannot be undone. <?php echo $users[$i]["name"];?>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                          <form method="post" action="/usermanage/delete" style="display:inline">
+                            <input type="hidden" name="user_id" value="<?php echo $users[$i]["id"];?>" style="width:0px"/>
+                            <button class="btn btn-danger">Yes, I'm sure</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Modal end -->
+                  
 
                 </div>
               </td>
