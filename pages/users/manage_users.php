@@ -1,33 +1,32 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Simple CMS</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
-    />
-    <style type="text/css">
-      body {
-        background: #f1f1f1;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container mx-auto my-5" style="max-width: 700px;">
+<?php
+
+$database = connectToDB();
+
+    $sql = "SELECT * FROM users";
+
+    $query = $database->prepare($sql);
+
+    $query->execute();
+
+    $users = $query->fetchAll();
+
+?>
+
+<?php require "parts/header.php"?>
+
+    <div class="container mx-auto my-5" style="max-width: 800px;">
       <div class="d-flex justify-content-between align-items-center mb-2">
         <h1 class="h1">Manage Users</h1>
         <div class="text-end">
-          <a href="manage-users-add.html" class="btn btn-primary btn-sm"
+          <a href="/users/add" class="btn btn-primary btn-sm"
             >Add New User</a
           >
         </div>
       </div>
+
+      <?php require "parts/message_error.php"?>
+      <?php require "parts/message_success.php"?>
+
       <div class="card mb-2 p-4">
         <table class="table">
           <thead>
@@ -40,75 +39,49 @@
             </tr>
           </thead>
           <tbody>
+            
+          <?php foreach ($users as $i => $user) :?>
+
             <tr>
-              <th scope="row">3</th>
-              <td>Jack</td>
-              <td>jack@gmail.com</td>
-              <td><span class="badge bg-success">User</span></td>
+              <th scope="row"> <?= $user['id']?> </th>
+              <td class="text-break"> <?= $user['name']?> </td>
+              <td> <?= $user['email']?> </td>
+              <td>
+
+                <?php if ($user['role'] === 'admin'){
+                  echo "<span class='badge bg-primary'>Admin</span>";
+                } else if ($user['role'] === 'editor'){
+                  echo "<span class='badge bg-info'>Editor</span>";
+                } else {
+                  echo "<span class='badge bg-success'>User</span>";
+                }?>
+
+              </td>
               <td class="text-end">
-                <div class="buttons">
-                  <a
-                    href="/users/edit"
-                    class="btn btn-success btn-sm me-2"
-                    ><i class="bi bi-pencil"></i
-                  ></a>
+                <div class="buttons" style="min-width: 135px;">
+
+                  <form method="post" action="/users/edit" style="display:inline">
+                    <input type="hidden" name="user_id" value="<?php echo $users[$i]["id"];?>" style="width:0px"/>
+                    <button class="btn btn-success btn-sm me-2"><i class="bi bi-pencil"></i></button>
+                  </form>
+
                   <a
                     href="/users/changepwd"
                     class="btn btn-warning btn-sm me-2"
                     ><i class="bi bi-key"></i
                   ></a>
-                  <a href="#" class="btn btn-danger btn-sm"
-                    ><i class="bi bi-trash"></i
-                  ></a>
+
+                  <form method="post" action="/usermanage/delete" style="display:inline">
+                    <input type="hidden" name="user_id" value="<?php echo $users[$i]["id"];?>" style="width:0px"/>
+                    <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                  </form>
+
                 </div>
               </td>
             </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jane</td>
-              <td>jane@gmail.com</td>
-              <td><span class="badge bg-info">Editor</span></td>
-              <td class="text-end">
-                <div class="buttons">
-                  <a
-                    href="manage-users-edit.html"
-                    class="btn btn-success btn-sm me-2"
-                    ><i class="bi bi-pencil"></i
-                  ></a>
-                  <a
-                    href="manage-users-changepwd.html"
-                    class="btn btn-warning btn-sm me-2"
-                    ><i class="bi bi-key"></i
-                  ></a>
-                  <a href="#" class="btn btn-danger btn-sm"
-                    ><i class="bi bi-trash"></i
-                  ></a>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">1</th>
-              <td>John</td>
-              <td>john@gmail.com</td>
-              <td><span class="badge bg-primary">Admin</span></td>
-              <td class="text-end">
-                <div class="buttons">
-                  <a
-                    href="manage-users-edit.html"
-                    class="btn btn-success btn-sm me-2"
-                    ><i class="bi bi-pencil"></i
-                  ></a>
-                  <a
-                    href="manage-users-changepwd.html"
-                    class="btn btn-warning btn-sm me-2"
-                    ><i class="bi bi-key"></i
-                  ></a>
-                  <a href="#" class="btn btn-danger btn-sm"
-                    ><i class="bi bi-trash"></i
-                  ></a>
-                </div>
-              </td>
-            </tr>
+
+          <?php endforeach; ?>
+
           </tbody>
         </table>
       </div>

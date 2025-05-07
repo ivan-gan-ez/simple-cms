@@ -63,7 +63,19 @@ switch ($path) {
   case '/auth/signup':
     require "includes/auth/do_signup.php";
     break;
+
+  case '/usermanage/add':
+    require "includes/user/add.php";
+    break;
+
+  case '/usermanage/delete':
+    require "includes/user/delete.php";
+    break;
   
+  case '/usermanage/update':
+    require "includes/user/update.php";
+    break;
+    
   default:
     require "pages/home.php";
     break;
