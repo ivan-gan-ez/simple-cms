@@ -1,5 +1,10 @@
 <?php
 
+if ( !isAdmin() ){
+  header("Location: /dashboard");
+  exit;
+};
+
 $database = connectToDB();
 
 ?>

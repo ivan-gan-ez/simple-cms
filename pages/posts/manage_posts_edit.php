@@ -1,55 +1,77 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Simple CMS</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
-    />
-    <style type="text/css">
-      body {
-        background: #f1f1f1;
-      }
-    </style>
-  </head>
-  <body>
+<?php
+
+$database = connectToDB();
+
+$post_id = $_GET['id'];
+
+$sql = "SELECT * FROM posts WHERE post_id = :id";
+$query = $database->prepare($sql);
+$query->execute(["id" => $post_id]);
+$post = $query->fetch();
+
+if ( !isEditor() && $post['user_id'] !== $_SESSION['user']['id']){
+  header("Location: /posts/manage");
+  exit;
+};
+
+$title = $post['title'];
+$shortdesc = $post['shortdesc'];
+$content = $post['content'];
+$status = $post['status'];
+
+?>
+<?php require "parts/header.php"?>
+
     <div class="container mx-auto my-5" style="max-width: 700px;">
       <div class="d-flex justify-content-between align-items-center mb-2">
-        <h1 class="h1">Edit Post</h1>
+        <h1 class="h1">Edit <?= $title ?> </h1>
       </div>
       <div class="card mb-2 p-4">
-        <form>
+
+      <?php require "parts/message_error.php"?>
+
+        <form method="post" action="/postmanage/update">
           <div class="mb-3">
             <label for="post-title" class="form-label">Title</label>
             <input
               type="text"
               class="form-control"
               id="post-title"
-              value="Post 1"
+              name="title"
+              value="<?= $title ?>"
+            />
+            <input
+              type="hidden"
+              class="form-control"
+              id="post-id"
+              name="post_id"
+              value="<?= $post_id ?>"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="post-desc" class="form-label">Short description</label>
+            <input
+              type="text"
+              class="form-control"
+              id="post-desc"
+              name="desc"
+              value="<?= $shortdesc ?>"
             />
           </div>
           <div class="mb-3">
             <label for="post-content" class="form-label">Content</label>
-            <textarea class="form-control" id="post-content" rows="10">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris purus risus, euismod ac tristique in, suscipit quis quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum eget dapibus nibh. Pellentesque nec maximus odio. In pretium diam metus, sed suscipit neque porttitor vitae. Vestibulum a mattis eros. Integer fermentum arcu dolor, nec interdum sem tincidunt in. Cras malesuada a neque ut sodales. Nulla facilisi.
-
-Phasellus sodales arcu quis felis sollicitudin vehicula. Aliquam viverra sem ac bibendum tincidunt. Donec pulvinar id purus sagittis laoreet. Sed aliquet ac nisi vehicula rutrum. Proin non risus et erat rhoncus aliquet. Nam sollicitudin facilisis elit, a consequat arcu placerat eu. Pellentesque euismod et est quis faucibus.
-
-Curabitur sit amet nisl feugiat, efficitur nibh et, efficitur ex. Morbi nec fringilla nisl. Praesent blandit pellentesque urna, a tristique nunc lacinia quis. Integer semper cursus lectus, ac hendrerit mi volutpat sit amet. Etiam iaculis arcu eget augue sollicitudin, vel luctus lorem vulputate. Donec euismod eu dolor interdum efficitur. Vestibulum finibus, lectus sed condimentum ornare, velit nisi malesuada ligula, eget posuere augue metus et dolor. Nunc purus eros, ultricies in sapien quis, sagittis posuere risus.
-                        </textarea
-            >
+            <textarea
+            class="form-control"
+            id="post-content"
+            rows="8"
+            name="content"
+            placeholder="Content"><?= $content ?></textarea>
           </div>
           <div class="mb-3">
             <label for="post-content" class="form-label">Status</label>
             <select class="form-control" id="post-status" name="status">
-              <option value="review">Pending for Review</option>
-              <option value="publish">Publish</option>
+              <option value="pending" <?php echo ( $post["status"] === "pending" ? "selected" : "" ); ?>>Pending for Review</option>
+              <option value="published" <?php echo ( $post["status"] === "published" ? "selected" : "" ); ?>>Publish</option>
             </select>
           </div>
           <div class="text-end">

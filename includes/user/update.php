@@ -15,7 +15,7 @@
         
         $query->execute(["name" => $name, "role" => $role, "id" => $id]);
         
-        $_SESSION["success"] = "Information updated successfully.";
+        $_SESSION["success"] = "Post updated successfully.";
         header("Location: /users/manage");  
         exit;
     }

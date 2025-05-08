@@ -36,7 +36,7 @@ if ( empty($name) || empty($email) || empty($password) || empty($confirm_passwor
     exit;
 
 };
-}
+};
 header("Location: /users/add");  
 exit;
 

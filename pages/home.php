@@ -1,9 +1,9 @@
 <?php
     $database = connectToDB();
-    
-    // Get data from database
+
+    // Get data from database 
     // 2.25: recipe (sql command)
-    $sql = "SELECT * FROM users";
+    $sql = "SELECT posts.*, users.* FROM posts INNER JOIN users ON posts.user_id = users.id";
 
     // 2.5: prepare material (prepare sql query)
     $query = $database->prepare($sql);
@@ -12,19 +12,6 @@
     $query->execute();
 
     // 3: eat (fetch all results from the query)
-    $users = $query->fetchAll();
-
-    // Get data from database again
-    // 3.25: recipe (sql command)
-    $sql = "SELECT * FROM posts";
-
-    // 3.5: prepare material (prepare sql query)
-    $query = $database->prepare($sql);
-
-    // 3.75: cook it (execute the sql query)
-    $query->execute();
-
-    // 4: eat (fetch all results from the query)
     $posts = $query->fetchAll();
 ?>
 
@@ -33,15 +20,17 @@
 <div class="container mx-auto my-5" style="max-width: 500px;">
   <h1 class="h1 mb-4 text-center">My Blog</h1>
 
+  <p><?php echo ( isUserLoggedIn() ? "Welcome back, " . $_SESSION["user"]["name"] . "!" : "" ); ?></p>
+
   <?php foreach ($posts as $i => $post) {?>
       <div class="card mb-2">
         <div class="card-body">
-          <h5 class="card-title"><?=$posts[$i]['title']?></h5>
-          <p class="card-text">by <?=$posts[$i]['user']?></p>
-          <p class="card-text"><?=$posts[$i]['shortdesc']?></p>
+          <h5 class="card-title"><?=$post['title']?></h5>
+          <p class="card-text">by <?=$post['name']?></p>
+          <p class="card-text"><?=$post['shortdesc']?></p>
           <div class="text-end">
             <form method="POST" action="/post">
-              <input type="hidden" name="post_id" value="<?= $post["id"];?>" />
+              <input type="hidden" name="post_id" value="<?= $post["post_id"];?>" />
               <button class="btn btn-primary btn-sm">Read More</button>
             </form>
           </div>

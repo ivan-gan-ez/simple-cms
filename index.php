@@ -76,6 +76,22 @@ switch ($path) {
   case '/usermanage/update':
     require "includes/user/update.php";
     break;
+
+  case '/usermanage/changepwd':
+    require "includes/user/changepwd.php";
+    break;
+    
+  case '/postmanage/add':
+    require "includes/post/add.php";
+    break;
+
+  case '/postmanage/delete':
+    require "includes/post/delete.php";
+    break;
+  
+  case '/postmanage/update':
+    require "includes/post/update.php";
+    break;
     
   default:
     require "pages/home.php";

@@ -44,4 +44,39 @@ function isUserLoggedIn() {
     return isset($_SESSION['user']['name']);
 }
 
+/* isThing? */
+
+function isAdmin() {
+    if ( isset( $_SESSION['user'] ) ) {
+        if ($_SESSION['user']['role'] === 'admin') {
+            return true;
+        }
+    } 
+        
+    return false;
+}
+
+function isEditor() {
+    if ( isset( $_SESSION['user'] ) ) {
+        if ($_SESSION['user']['role'] === 'admin' ||
+            $_SESSION['user']['role'] === 'editor') {
+            return true;
+        } 
+    } 
+        
+    return false;
+}
+
+function isUser() {
+    if ( isset( $_SESSION['user'] ) ) {
+        if ($_SESSION['user']['role'] === 'admin' ||
+            $_SESSION['user']['role'] === 'editor'||
+            $_SESSION['user']['role'] === 'user') {
+            return true;
+        } 
+    } 
+        
+    return false;
+}
+
 ?>

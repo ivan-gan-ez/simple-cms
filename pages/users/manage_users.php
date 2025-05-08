@@ -1,5 +1,10 @@
 <?php
 
+if ( !isAdmin() ){
+  header("Location: /dashboard");
+  exit;
+};
+
 $database = connectToDB();
 
     $sql = "SELECT * FROM users";
@@ -67,7 +72,7 @@ $database = connectToDB();
                   ></a>
 
                   <a
-                    href="/users/changepwd"
+                    href="/users/changepwd?id=<?php echo $users[$i]["id"];?>"
                     class="btn btn-warning btn-sm me-2"
                     ><i class="bi bi-key"></i
                   ></a>
