@@ -8,7 +8,7 @@
 
         <?php require "parts/message_error.php"?>
 
-        <form method="post" action="/postmanage/add">
+        <form method="post" action="/postmanage/add" enctype="multipart/form-data">
           <div class="mb-3">
             <label for="post-title" class="form-label">Title</label>
             <input type="text" class="form-control" id="post-title" name="title"/>
@@ -26,6 +26,9 @@
               rows="8"
               name="content"
             ></textarea>
+          </div>
+          <div class="mb-3">
+            <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*">
           </div>
           <div class="text-end">
             <button type="submit" class="btn btn-primary">Add</button>

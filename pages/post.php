@@ -23,6 +23,9 @@
       <h1 class="h1 mb-4 text-center"><?=$post['title']?></h1>
       <h1 class="h6 mb-4 text-center">by <?=$post['name']?></h1>
       <?= nl2br($post['content']);?>
+      <div class="mt-3">
+        <img src="<?= $post['image'];?>" class="img-fluid">
+      </div>
       <div class="text-center mt-3">
         <a href="/" class="btn btn-link btn-sm"
           ><i class="bi bi-arrow-left"></i> Back</a

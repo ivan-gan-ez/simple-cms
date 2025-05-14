@@ -30,7 +30,7 @@ $status = $post['status'];
 
       <?php require "parts/message_error.php"?>
 
-        <form method="post" action="/postmanage/update">
+        <form method="post" action="/postmanage/update" enctype="multipart/form-data">
           <div class="mb-3">
             <label for="post-title" class="form-label">Title</label>
             <input
@@ -73,6 +73,13 @@ $status = $post['status'];
               <option value="pending" <?php echo ( $post["status"] === "pending" ? "selected" : "" ); ?>>Pending for Review</option>
               <option value="published" <?php echo ( $post["status"] === "published" ? "selected" : "" ); ?>>Publish</option>
             </select>
+          </div>
+          <div>
+            <label class="form-label">Image</label>
+            <div class="mbIt's planting seeds in a garden you never get to se-4">
+              <img src="/<?= $post['image'];?>" class="img-fluid">
+            </div>
+            <input type="file" name="image" accept="image/*">
           </div>
           <div class="text-end">
             <button type="submit" class="btn btn-primary">Update</button>
