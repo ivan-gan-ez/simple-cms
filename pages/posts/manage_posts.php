@@ -7,15 +7,29 @@ if ( !isUser() ){
 
 $database = connectToDB();
 
+$user_id = $_SESSION['user']['id'];
+
 // Get data from database 
-// 2.25: recipe (sql command)
-$sql = "SELECT posts.*, users.* FROM posts INNER JOIN users ON posts.user_id = users.id";
 
-// 2.5: prepare material (prepare sql query)
-$query = $database->prepare($sql);
+if ( isEditor() ) {
+    // 2.25: recipe (sql command)
+  $sql = "SELECT posts.*, users.name FROM posts INNER JOIN users ON posts.user_id = users.id ORDER BY post_id DESC";
 
-// 2.75: cook it (execute the sql query)
-$query->execute();
+  // 2.5: prepare material (prepare sql query)
+  $query = $database->prepare($sql);
+
+  // 2.75: cook it (execute the sql query)
+  $query->execute();
+} else {
+    // 2.25: recipe (sql command)
+  $sql = "SELECT posts.*, users.name FROM posts INNER JOIN users ON posts.user_id = users.id WHERE user_id = :user_id ORDER BY post_id DESC";
+
+  // 2.5: prepare material (prepare sql query)
+  $query = $database->prepare($sql);
+
+  // 2.75: cook it (execute the sql query)
+  $query->execute(["user_id" => $user_id]);
+}
 
 // 3: eat (fetch all results from the query)
 $posts = $query->fetchAll();
@@ -53,7 +67,6 @@ $posts = $query->fetchAll();
 
             <?php foreach ($posts as $i => $post) {?>
 
-            <?php if (isEditor() || $post['user_id'] === $_SESSION['user']['id']) {?>
             <tr>
               <th scope="row"> <?= $post['post_id'] ?> </th>
               <td class="text-break"> <?= $post['title'] ?> </td>
@@ -116,7 +129,7 @@ $posts = $query->fetchAll();
               </td>
             </tr>
 
-            <?php }; }; ?>
+            <?php }; ?>
             
           </tbody>
         </table>

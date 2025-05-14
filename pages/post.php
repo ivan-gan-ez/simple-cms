@@ -5,7 +5,7 @@
 
     // Get data from database 
     // 2.25: recipe (sql command)
-    $sql = "SELECT posts.*, users.* FROM posts INNER JOIN users ON posts.user_id = users.id WHERE post_id = :id";
+    $sql = "SELECT posts.*, users.name FROM posts INNER JOIN users ON posts.user_id = users.id WHERE post_id = :id";
 
     // 2.5: prepare material (prepare sql query)
     $query = $database->prepare($sql);
@@ -22,7 +22,7 @@
     <div class="container mx-auto my-5" style="max-width: 500px;">
       <h1 class="h1 mb-4 text-center"><?=$post['title']?></h1>
       <h1 class="h6 mb-4 text-center">by <?=$post['name']?></h1>
-      <?=$post['content']?>
+      <?= nl2br($post['content']);?>
       <div class="text-center mt-3">
         <a href="/" class="btn btn-link btn-sm"
           ><i class="bi bi-arrow-left"></i> Back</a
